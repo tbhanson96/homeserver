@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Index</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="stylesheets/index.css" rel="stylesheet">
+
+    </head>
+    <body>
+        <%- include('_navbar') %>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4"> Home Server</h1>
+                <p class="lead">Files, backup, syncing, and more</p>
+            </div>
+        </div>
+        <div id="apps">
+            <% cards.forEach((card) => { %>
+                <%- include('_card', { card }) %>
+            <% }); %>
+        </div>
+    </body>
+</html>

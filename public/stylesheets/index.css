@@ -1,0 +1,20 @@
+#apps {
+    background-color: lightgray;
+    height: 400px;
+}
+
+.card {
+    background-color: darkgray;
+    left: 10px;
+    top: 10px;
+    width: 380px;
+    height: 380px;
+
+}
+
+.card-img-top {
+    width: 50%;
+    height: 50%;
+    left: 25%;
+    top: 25%;
+}
