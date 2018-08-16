@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Files</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="stylesheets/files.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4"> Index of <%= dir %></h1>
+            </div>
+        </div>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Last Modified</th>
+                    <th scope="col">Size</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% files.forEach((file) => { %>
+                    <%- include('_entry', { file }) %>
+                <% }); %>
+            </tbody>
+        </table>
+    </body>
+</html>
