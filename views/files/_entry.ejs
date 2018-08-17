@@ -3,7 +3,7 @@
         <img class="file-icon" src="images/icons/<%= file.type %>.png">
         <%= file.permissions %>
     </th>
-    <td><%= file.name %></td>
+    <td><a href=<%= '/files'+reqDir+file.name %>><%= file.name %></a></td>
     <td><%= file.timestamp %></td>
     <td><%= file.size %></td>
 </tr>

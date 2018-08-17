@@ -1,0 +1,13 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/files">Home</a>
+    <% pathArr.forEach((cDir, i, arr) => { %>
+        <% let link = arr.slice(0, i+1) %>
+        <% if (i === arr.length-1) { %>
+            <li class="breadcrumb-item active" aria-current="page"><%= cDir %></li>
+        <% } else {%>
+            <li class="breadcrumb-item"><a href=<%= "/files/" + link.join('/')+'/' %>><%= cDir %></a></li>
+        <% } %>
+    <% }) %>
+  </ol>
+</nav>

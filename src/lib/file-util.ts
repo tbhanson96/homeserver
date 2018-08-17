@@ -12,11 +12,23 @@ function parsePerms(perms: string): string {
 }
 
 function parseTimestamp(stamp: string): string {
-    return stamp.split('.')[0].split('T').join(' ');
+    let temp = stamp.split('.')[0].split('T');
+    if (temp.length > 1) {
+        return 'T' + temp[1];
+    }
+    else return temp[0];
 }
 
-function parseFileType(fileType: string): string {
-    return fileType.split('.').slice(-1)[0];
+function splitDir(path: string): string[] {
+    let temp = path.split('/');
+    let ret = []
+    for (let piece of temp) {
+        if (piece !== '') {
+            ret.push(piece);
+        }
+    }
+
+    return ret
 }
 
-export {parsePerms, parseTimestamp}
+export {parsePerms, parseTimestamp, splitDir };
