@@ -4,8 +4,9 @@
   "description": "Personal home server that I use for files, tools, and backup",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "yarn run build && yarn run serve",
-    "serve": "nodemon dist/server.js",
+    "dev": "yarn run build && yarn run serveDev",
+    "serveDev": "nodemon dist/server.js",
+    "serve": "node dist/server.js",
     "build": "tsc"
   },
   "repository": {
@@ -21,12 +22,15 @@
   "dependencies": {
     "ejs": "^2.6.1",
     "express": "^4.16.3",
-    "nodemon": "^1.18.3",
+    "formidable": "^1.2.1",
+    "jquery": "^3.3.1",
+    "morgan": "^1.9.0",
+    "mv": "^2.1.1",
     "typescript": "^3.0.1",
     "yarn": "^1.9.4"
   },
   "devDependencies": {
     "@types/node": "^10.7.0",
-    "morgan": "^1.9.0"
+    "nodemon": "^1.18.3"
   }
 }

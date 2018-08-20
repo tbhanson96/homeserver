@@ -3,16 +3,23 @@
         <title>Files</title>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="/stylesheets/files.css" rel="stylesheet">
-        <script src="/scripts/files/listener.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="/scripts/files/upload.js"></script>
     </head>
     <body>
-        <%- include('_directory', { localDir }) %>
         <%- include('_addModal', { localDir }) %>
+        <%- include('_directory', { localDir }) %>
+        <% if (!!upload) { %>
+            <div class="alert alert-success" role="alert">
+                Successfully uploaded files: <%= upload %>.
+            </div>
+        <% } %>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col" >
-                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal">
+                        <button type="button" id="upload" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal">
                                 <img class="add-icon" src="/images/add.png"/>
                                 Upload File
                         </button>

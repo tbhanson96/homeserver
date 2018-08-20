@@ -13,3 +13,11 @@
 .btn:focus, .btn.focus {
 	box-shadow: none;
 }
+
+.disabled {
+    display: none;
+}
+
+.loading-icon {
+    height: 40px;
+}
