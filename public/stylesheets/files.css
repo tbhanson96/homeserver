@@ -9,3 +9,7 @@
 .add-icon {
     height: 25px;
 }
+
+.btn:focus, .btn.focus {
+	box-shadow: none;
+}

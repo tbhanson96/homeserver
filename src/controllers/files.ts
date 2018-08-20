@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import fs from 'fs';
 import file from '../models/file';
-import { parseTimestamp, parsePerms, splitDir } from '../lib/file-util';
+import { parseTimestamp, parsePerms, splitDir, parseSize } from '../lib/file-util';
 import VALID_FILE_TYPES from '../../config/valid-file-types';
 
 
@@ -37,7 +37,7 @@ export default class FilesController {
     }
 
     private getFileProps(filename: string, stats: any): object {
-        let timestamp = parseTimestamp(stats.birthtime.toDateString());
+        let timestamp = parseTimestamp(stats.mtime.toDateString());
         let permissions = parsePerms(stats.mode.toString());
         let extension = filename.split('.').slice(-1)[0];
         let type = VALID_FILE_TYPES[extension];
@@ -47,7 +47,7 @@ export default class FilesController {
         if (stats.isDirectory()) {
             type = 'dir';
         }
-        let size = stats.size;
+        let size = parseSize(stats.size);
         let name = stats.isDirectory() ? filename+'/' : filename;
         let link = stats.isDirectory() ? '/files'+this.reqDir+filename+'/' : this.reqDir+filename;
 
