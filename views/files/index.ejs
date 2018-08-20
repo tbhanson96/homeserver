@@ -3,13 +3,19 @@
         <title>Files</title>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="/stylesheets/files.css" rel="stylesheet">
+        <script src="/scripts/files/listener.js"></script>
     </head>
     <body>
         <%- include('_directory', { localDir }) %>
+        <%- include('_addModal', { localDir }) %>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col"></th>
+                    <th scope="col" >
+                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal">
+                                <img class="add-icon" src="/images/add.png"/>
+                        </button>
+                    </th>
                     <th scope="col">Name</th>
                     <th scope="col">Last Modified</th>
                     <th scope="col">Size</th>

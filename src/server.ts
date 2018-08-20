@@ -3,15 +3,18 @@ import morgan from 'morgan';
 import HomeController from './controllers/home'
 import FilesController from './controllers/files'
 
+const ROOT_DIR = '/home/tim';
+
 const app = express();
 const home = new HomeController();
-const files = new FilesController();
+const files = new FilesController(ROOT_DIR);
 
-app.use(express.static(__dirname + '/../public'));
 app.set('view engine', 'ejs');
 app.set('views', __dirname + "/../views");
 app.set('port', process.env.port || 3000);
 
+app.use(express.static(ROOT_DIR));
+app.use(express.static(__dirname + '/../public', {dotfiles: 'allow'}));
 app.use(morgan('combined'));
 app.use('/', home.router);
 app.use('/files', files.router);

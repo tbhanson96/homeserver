@@ -1,4 +1,4 @@
-{
+module.exports = {
     "avi": "avi",
     "css": "css",
     "csv": "csv",
@@ -29,4 +29,4 @@
     "xml": "xml",
     "zip": "zip",
     "tar": "zip"
-}
+};
