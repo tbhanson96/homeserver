@@ -3,7 +3,7 @@ Personal server I use for files, backup, and tools
 ## Installation
 Clone this repository anywhere, and run:
 ```
-yarn install && yarn run build
+yarn install && yarn build
 ```
 to install dependencies and compile source files.
 
