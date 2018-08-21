@@ -4,10 +4,11 @@
   "description": "Personal home server that I use for files, tools, and backup",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "yarn run build && yarn run serveDev",
+    "dev": "yarn mock && yarn run build && yarn run serveDev",
     "serveDev": "nodemon dist/server.js",
     "serve": "node dist/server.js",
-    "build": "tsc"
+    "build": "tsc",
+    "mock": "rm -r mock/ && git co mock/"
   },
   "repository": {
     "type": "git",

@@ -33,11 +33,12 @@ export default class FilesController {
         let form = new formidable.IncomingForm();
         let fileUploads = '';
         let numComplete = 0;
+        let errors = [];
         form.maxFileSize = 10*1024*1024*1024;
         form.parse(req, (err, fields, files) => {
             if (err) {
                 console.log('Upload error: ', err);
-                res.end(util.inspect(err));
+                errors.push(err);
             }
             let fileNames = Object.keys(files);
             if(!Array.isArray(fileNames)) {
@@ -45,24 +46,29 @@ export default class FilesController {
             }
             for (let filename of fileNames) {
                 let file = files[filename];
+                numComplete++;
+                if(!file.name) {
+                    continue;
+                }
                 let oldpath = file.path;
                 let newpath = this.rootDir + req.path + file.name;
                 fileUploads += file.name + ' ';
-                numComplete++;
-                console.log(file.name);
                 mv(oldpath, newpath, (err) => {
                     if(err) {
-                        console.log(err);
+                        errors.push(err);
                     }
                     if(numComplete == fileNames.length) {
-                        res.render('files/index', { 
-                            reqDir: this.reqDir,
-                            localDir: this.rootDir + req.path,
-                            pathArr: splitDir(this.reqDir),
-                            files: this.getFiles(this.rootDir + req.path),
-                            upload: fileUploads
-                        });
-                        console.log('fileUploads', fileUploads);
+                        if(errors.length !== 0) {
+                            res.end(util.inspect(errors));
+                        } else {
+                            res.render('files/index', { 
+                                reqDir: this.reqDir,
+                                localDir: this.rootDir + this.reqDir,
+                                pathArr: splitDir(this.reqDir),
+                                files: this.getFiles(this.rootDir + this.reqDir),
+                                upload: fileUploads
+                            });
+                        }
                     }
                 });
             }

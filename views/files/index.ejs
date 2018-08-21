@@ -6,12 +6,13 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="/scripts/files/upload.js"></script>
+        <script src="/scripts/files/main.js"></script>
     </head>
     <body>
         <%- include('_addModal', { localDir }) %>
         <%- include('_directory', { localDir }) %>
         <% if (!!upload) { %>
-            <div class="alert alert-success" role="alert">
+            <div class="alert alert-success fade show" role="alert">
                 Successfully uploaded files: <%= upload %>
             </div>
         <% } %>

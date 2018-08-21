@@ -2,5 +2,7 @@
       action=<%= '/files' + reqDir %>
       method='post' 
       encType="multipart/form-data">
-    <input type="file" name="file1" />
-</form>  
+    <ul id='files-list' class="list-group">
+    </ul>
+    <input id='file-0' type="file" name="file0" oninput='renderFormInput()' />
+</form>
