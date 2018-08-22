@@ -32,10 +32,11 @@ export default class FilesController {
     private upload(req, res): void {
         let form = new formidable.IncomingForm();
         let fileUploads = '';
-        let numComplete = 0;
+        let filesMoving = 1000;
         let errors = [];
         form.maxFileSize = 10*1024*1024*1024;
         form.parse(req, (err, fields, files) => {
+            console.log('parse');
             if (err) {
                 console.log('Upload error: ', err);
                 errors.push(err);
@@ -44,10 +45,11 @@ export default class FilesController {
             if(!Array.isArray(fileNames)) {
                 fileNames = [fileNames];
             }
+            filesMoving = fileNames.length;
             for (let filename of fileNames) {
                 let file = files[filename];
-                numComplete++;
                 if(!file.name) {
+                    filesMoving--;
                     continue;
                 }
                 let oldpath = file.path;
@@ -57,9 +59,10 @@ export default class FilesController {
                     if(err) {
                         errors.push(err);
                     }
-                    if(numComplete == fileNames.length) {
+                    filesMoving--;
+                    if( filesMoving === 0) {
                         if(errors.length !== 0) {
-                            res.end(util.inspect(errors));
+                            res.status(500).send(util.inspect(errors));
                         } else {
                             res.render('files/index', { 
                                 reqDir: this.reqDir,
