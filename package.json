@@ -28,6 +28,7 @@
     "jquery": "^3.3.1",
     "morgan": "^1.9.0",
     "mv": "^2.1.1",
+    "options-parser": "^0.4.0",
     "secure-compare": "^3.0.1",
     "typescript": "^3.0.1",
     "yarn": "^1.9.4"
