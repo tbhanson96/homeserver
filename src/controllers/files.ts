@@ -20,8 +20,8 @@ export default class FilesController {
     }
 
     private index(req, res): void {
-        let localDir = this.rootDir + req.path;
-        let reqDir = req.path;
+        let localDir = this.rootDir + decodeURI(req.path);
+        let reqDir = decodeURI(req.path);
         this.reqDir = reqDir;
         let pathArr = splitDir(reqDir);
         let files = this.getFiles(localDir);
@@ -103,7 +103,7 @@ export default class FilesController {
         let size = parseSize(stats.size);
         let name = stats.isDirectory() ? filename+'/' : filename;
         let link = stats.isDirectory() ? '/files'+this.reqDir+filename+'/' : this.reqDir+filename;
-
+        link = encodeURI(link);
         return { name, type, size, timestamp, permissions, link };
         
     }
