@@ -6,8 +6,8 @@ import FilesController from './controllers/files'
 import AuthController from './controllers/auth';
 
 const { opt } = options.parse({
-    user: {default: ''},
-    pass: {default: ''},
+    user: {default: ' '},
+    pass: {default: ' '},
     rootDir: {default: __dirname + '/../mock'},
     port: {default: 3000}
 });

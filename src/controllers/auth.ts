@@ -16,7 +16,7 @@ export default class AuthController {
     }
 
     private authenticate(req, res, next) {
-        if(this.username === '' || this.password === '') {
+        if(this.username === ' ' || this.password === ' ') {
             next();
             return;
         }
