@@ -1,13 +1,5 @@
 <html>
-    <head>
-        <title>Files</title>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/stylesheets/files.css" rel="stylesheet">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="/scripts/files/upload.js"></script>
-        <script src="/scripts/files/main.js"></script>
-    </head>
+    <%- include('/_head', { title: 'Files', controller: files, scripts: ['main', 'upload'], stylesheets: ['files']}) %>
     <body>
         <%- include('_addModal', { localDir }) %>
         <%- include('_directory', { localDir }) %>

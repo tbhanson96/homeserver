@@ -23,6 +23,7 @@ const files = new FilesController(ROOT_DIR);
 const auth = new AuthController(USERNAME, PASSWORD);
 
 app.set('view engine', 'ejs');
+app.set('view options', { root: __dirname + '/../views'})
 app.set('views', __dirname + "/../views");
 app.set('port', PORT);
 
