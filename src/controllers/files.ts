@@ -1,9 +1,7 @@
 import express, { Router } from 'express';
 import fs from 'fs';
-import file from '../models/file';
-import formidable from 'formidable';
-import mv from 'mv';
 import util from 'util';
+import file from '../models/file';
 import { parseTimestamp, parsePerms, splitDir, parseSize } from '../lib/file-util';
 import VALID_FILE_TYPES from '../../config/valid-file-types';
 
@@ -30,52 +28,33 @@ export default class FilesController {
     }
 
     private upload(req, res): void {
-        let form = new formidable.IncomingForm();
         let fileUploads = '';
-        let filesMoving = 1000;
         let errors = [];
-        form.maxFileSize = 10*1024*1024*1024;
-        form.parse(req, (err, fields, files) => {
-            console.log('parse');
-            if (err) {
-                console.log('Upload error: ', err);
-                errors.push(err);
+        Object.keys(req.files).forEach((filename, index, arr) => {
+            let file = req.files[filename];
+            if(!file.name) {
+                return;
             }
-            let fileNames = Object.keys(files);
-            if(!Array.isArray(fileNames)) {
-                fileNames = [fileNames];
-            }
-            filesMoving = fileNames.length;
-            for (let filename of fileNames) {
-                let file = files[filename];
-                if(!file.name) {
-                    filesMoving--;
-                    continue;
+            const newpath = this.rootDir + req.path + file.name;
+            fileUploads += file.name + ' ';
+            file.mv(newpath, (err) => {
+                if(err) {
+                    errors.push(err);
                 }
-                let oldpath = file.path;
-                let newpath = this.rootDir + req.path + file.name;
-                fileUploads += file.name + ' ';
-                mv(oldpath, newpath, (err) => {
-                    if(err) {
-                        errors.push(err);
-                    }
-                    filesMoving--;
-                    if( filesMoving === 0) {
-                        if(errors.length !== 0) {
-                            res.status(500).send(util.inspect(errors));
-                        } else {
-                            res.render('files/index', { 
-                                reqDir: this.reqDir,
-                                localDir: this.rootDir + this.reqDir,
-                                pathArr: splitDir(this.reqDir),
-                                files: this.getFiles(this.rootDir + this.reqDir),
-                                upload: fileUploads
-                            });
-                        }
-                    }
-                });
-            }
+                if(index === arr.length - 1 && errors.length === 0) {
+                    res.render('files/index', { 
+                        reqDir: this.reqDir,
+                        localDir: this.rootDir + this.reqDir,
+                        pathArr: splitDir(this.reqDir),
+                        files: this.getFiles(this.rootDir + this.reqDir),
+                        upload: fileUploads
+                    });
+                }
+            });
         });
+        if(errors.length !== 0) {
+            res.status(500).send(util.inspect(errors));
+        }
     }
 
     private getFiles(dir: string): file[] {

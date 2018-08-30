@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import options from 'options-parser';
+import fileUpload from 'express-fileupload';
 import HomeController from './controllers/home'
 import FilesController from './controllers/files'
 import AuthController from './controllers/auth';
@@ -26,6 +27,7 @@ app.set('views', __dirname + "/../views");
 app.set('port', PORT);
 
 app.use(morgan('combined'));
+app.use(fileUpload());
 app.use(auth.router);
 app.use(express.static(ROOT_DIR));
 app.use(express.static(__dirname + '/../public', {dotfiles: 'allow'}));
