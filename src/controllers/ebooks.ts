@@ -2,6 +2,7 @@ import express, { Router } from 'express';
 import fs from 'fs';
 import util from 'util';
 import epub from 'epub';
+import Calibre from 'node-calibre';
 import Ebook from '../models/ebook';
 
 export default class EbooksController {
@@ -59,6 +60,16 @@ export default class EbooksController {
             });
             ebook.parse();
         });
+    }
+
+    private convertEpubToMobi(filename: string): void {
+        const calibre = new Calibre({ library: this.ebookDir });
+        calibre.run('calibredb add', [this.ebookDir + filename])
+                .then(result => {
+                    console.log(result);
+
+                    return calibre.run('ebook-convert', [this.ebookDir + filename, this.ebookDir + ])
+                })
     }
 
 

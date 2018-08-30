@@ -6,6 +6,7 @@ function submitForm() {
     } else if (!isEpubFile(getFileInput())) {
         alertInvalidFile();
     } else {
+        $('#ebook-uploadProgress').collapse();
         $('#ebook-upload-form').submit();
     }
 }
