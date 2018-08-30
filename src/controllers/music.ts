@@ -10,8 +10,8 @@ export default class MusicController {
         this.router.get('/', this.index.bind(this));
     }
 
-    private index(req, res) {
-        res.render('music/index');
+    private index(req, res): void {
+        res.render('music/index', {});
     }
     
 };

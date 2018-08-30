@@ -5,12 +5,14 @@ import HomeController from './controllers/home'
 import FilesController from './controllers/files'
 import AuthController from './controllers/auth';
 import EbooksController from './controllers/ebooks';
+import MusicController from './controllers/music';
 
 class Server {
     private app: any;
     private home: HomeController;
     private files: FilesController;
     private auth: AuthController;
+    private music: MusicController;
     private ebooks: EbooksController;
 
     private ROOT_DIR: string;
@@ -38,6 +40,7 @@ class Server {
         this.files = new FilesController(opts.rootDir);
         this.auth = new AuthController(opts.user, opts.pass);
         this.ebooks = new EbooksController(this.EBOOK_DIR, this.EMAIL_USER, this.EMAIL_PASS);
+        this.music = new MusicController();
 
         this.app.set('view engine', 'ejs');
         this.app.set('view options', { root: __dirname + '/../views'})
@@ -53,6 +56,7 @@ class Server {
         this.app.use('/', this.home.router);
         this.app.use('/files', this.files.router);
         this.app.use('/ebooks', this.ebooks.router);
+        this.app.use('/music', this.music.router);
     }
 
     public start(): void {
