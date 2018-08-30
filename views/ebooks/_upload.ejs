@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="collapse" id='ebook-upload'>
+        <form id='ebook-upload-form' action='ebooks' method='post' encType='multipart/form-data'>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="ebook-file" oninput='updateFileLabel()' aria-describedby="inputGroupFileAddon04">
+                        <label class="custom-file-label" for="ebook-file" id="ebook-file-label">
+                            Select file (.epub)
+                        </label>
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary" type="button" onclick="submitForm()" id="ebook-file">Upload</button>
+                    </div>
+                </div>
+                <small class="form-text text-muted">Uploads the .epub file, converts to mobi, sends to kindle, uploads to server.</small>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="send-to-kindle">
+                <label class="form-check-label" for="send-to-kindle">Send ebook to kindle</label>
+            </div>
+        </form>
+    </div>
+</div>

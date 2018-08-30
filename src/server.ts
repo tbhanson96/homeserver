@@ -4,6 +4,7 @@ import fileUpload from 'express-fileupload';
 import HomeController from './controllers/home'
 import FilesController from './controllers/files'
 import AuthController from './controllers/auth';
+import EbooksController from './controllers/ebooks';
 
 class Server {
     private app: any;

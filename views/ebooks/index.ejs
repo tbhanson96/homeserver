@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/stylesheets/ebooks.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src='/scripts/ebooks/upload.js'></script>
+    </head>
+    <body>
+        <section class="jumbotron text-center bg-white">
+            <div class="container">
+                <h1 class="jumbotron-heading">Ebooks</h1>
+                <p class="lead text-muted">Upload and view ebooks.</p>
+                <p>
+                    <a href="#ebook-upload" role='button' class="btn btn-primary my-2" data-toggle='collapse' aria-expanded='false' aria-controls='collapseExample'>Upload new ebook</a>
+                </p>
+            </div>
+        </section>
+        </div>
+        <%- include('_upload') %>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    <% for (book of books) { %>
+                        <%- include('_ebook', { book }) %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
