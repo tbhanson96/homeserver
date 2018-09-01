@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+
+const Server = require('../dist/server');
+const options = require('options-parser');
+
+const { opt } = options.parse({
+    user: {default: ' '},
+    pass: {default: ' '},
+    rootDir: {default: __dirname + '/../mock'},
+    ebookDir: {default: __dirname + '/../mock/Ebooks/'},
+    port: {default: 3000}
+});
+
+let server = new Server(opt);
+server.configure();
+server.start();
+

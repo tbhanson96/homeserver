@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "Personal home server that I use for files, tools, and backup",
   "main": "dist/server.js",
+  "bin": "bin/homeserver",
   "scripts": {
+    "prepublish": "tsc",
     "dev": "yarn mock && yarn run build && yarn run serveDev",
-    "serveDev": "nodemon dist/server.js",
-    "serve": "node dist/server.js",
+    "serveDev": "nodemon bin/homeserver",
+    "serve": "node bin/homeserver",
     "build": "tsc",
     "mock": "rm -r mock/ && git co mock/"
   },
