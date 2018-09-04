@@ -11,6 +11,7 @@ class Server {
     private home: HomeController;
     private files: FilesController;
     private auth: AuthController;
+    private ebooks: EbooksController;
 
     private ROOT_DIR: string;
     private EBOOK_DIR: string;
@@ -32,6 +33,7 @@ class Server {
         this.home = new HomeController();
         this.files = new FilesController(opts.rootDir);
         this.auth = new AuthController(opts.user, opts.pass);
+        this.ebooks = new EbooksController(this.EBOOK_DIR);
 
         this.app.set('view engine', 'ejs');
         this.app.set('view options', { root: __dirname + '/../views'})
@@ -45,6 +47,7 @@ class Server {
         this.app.use(express.static(__dirname + '/../public', {dotfiles: 'allow'}));
         this.app.use('/', this.home.router);
         this.app.use('/files', this.files.router);
+        this.app.use('/ebooks', this.ebooks.router);
     }
 
     public start(): void {
