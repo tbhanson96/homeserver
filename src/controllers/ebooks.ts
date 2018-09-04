@@ -64,12 +64,12 @@ export default class EbooksController {
 
     private convertEpubToMobi(filename: string): void {
         const calibre = new Calibre({ library: this.ebookDir });
-        calibre.run('calibredb add', [this.ebookDir + filename])
-                .then(result => {
-                    console.log(result);
+        // calibre.run('calibredb add', [this.ebookDir + filename])
+        //         .then(result => {
+        //             console.log(result);
 
-                    return calibre.run('ebook-convert', [this.ebookDir + filename, this.ebookDir + ])
-                })
+        //             return calibre.run('ebook-convert', [this.ebookDir + filename, this.ebookDir + ])
+        //         })
     }
 
 
