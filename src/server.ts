@@ -18,19 +18,20 @@ class Server {
     private PORT: number;
 
     constructor(opts: any) {
+        this.app = express();
+    }
+
+    public configure(opts) {
         this.PORT = opts.port;
         this.ROOT_DIR = opts.rootDir;
         this.EBOOK_DIR = opts.ebookDir;
         this.USER = opts.user;
         this.PASSWORD = opts.pass;
 
-        this.app = express();
         this.home = new HomeController();
         this.files = new FilesController(opts.rootDir);
         this.auth = new AuthController(opts.user, opts.pass);
-    }
 
-    public configure() {
         this.app.set('view engine', 'ejs');
         this.app.set('view options', { root: __dirname + '/../views'})
         this.app.set('views', __dirname + "/../views");

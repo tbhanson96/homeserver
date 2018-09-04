@@ -11,7 +11,7 @@ const { opt } = options.parse({
     port: {default: 3000}
 });
 
-let server = new Server(opt);
-server.configure();
+let server = new Server();
+server.configure(opt);
 server.start();
 
