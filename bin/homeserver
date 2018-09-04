@@ -8,7 +8,9 @@ const { opt } = options.parse({
     pass: {default: ' '},
     rootDir: {default: __dirname + '/../mock'},
     ebookDir: {default: __dirname + '/../mock/Ebooks/'},
-    port: {default: 3000}
+    port: {default: 3000},
+    emailUser: {default: 'fake@email.com'},
+    emailPass: {default: 'password'}
 });
 
 let server = new Server();

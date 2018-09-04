@@ -18,6 +18,8 @@ class Server {
     private USER: string;
     private PASSWORD: string;
     private PORT: number;
+    private EMAIL_USER: string;
+    private EMAIL_PASS: string;
 
     constructor() {
         this.app = express();
@@ -29,11 +31,13 @@ class Server {
         this.EBOOK_DIR = opts.ebookDir;
         this.USER = opts.user;
         this.PASSWORD = opts.pass;
+        this.EMAIL_USER = opts.emailUser;
+        this.EMAIL_PASS = opts.emailPass;
 
         this.home = new HomeController();
         this.files = new FilesController(opts.rootDir);
         this.auth = new AuthController(opts.user, opts.pass);
-        this.ebooks = new EbooksController(this.EBOOK_DIR);
+        this.ebooks = new EbooksController(this.EBOOK_DIR, this.EMAIL_USER, this.EMAIL_PASS);
 
         this.app.set('view engine', 'ejs');
         this.app.set('view options', { root: __dirname + '/../views'})

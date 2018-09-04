@@ -1,5 +1,11 @@
 function parseName(filename: string): string {
-    return filename.split('.').slice(-1).join('');
+    let arr = filename.split('.');
+    arr.splice(-1);
+    return arr.join('.');
 }
 
-export { parseName };
+function getFileExt(filename: string): string {
+    return filename.split('.').slice(-1)[0];
+}
+
+export { parseName, getFileExt };

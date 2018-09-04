@@ -1,15 +1,22 @@
 import express, { Router } from 'express';
 import fs from 'fs';
 import util from 'util';
+import EMAIL_CRED from '../../config/email-credentials';
 import epub from 'epub';
+import { parseName, getFileExt } from '../lib/ebook-util';
 import Calibre from 'node-calibre';
+import nodemailer from 'nodemailer';
 import Ebook from '../models/ebook';
 
 export default class EbooksController {
     public router: Router;
     private ebookDir: string;
+    private EMAIL_USER: string;
+    private EMAIL_PASS: string;
 
-    public constructor(ebookDir: string) {
+    public constructor(ebookDir: string, emailUser: string, emailPass: string) {
+        this.EMAIL_USER = emailUser;
+        this.EMAIL_PASS = emailPass;
         this.ebookDir = ebookDir;
         this.router = express.Router();
         this.router.get('*', this.index.bind(this));
@@ -33,6 +40,10 @@ export default class EbooksController {
                 if(err) {
                     errors.push(err);
                 } else if(errors.length === 0) {
+                    if(req.body && req.body.sendToKindle === 'on') {
+                        console.log('sent to kindle');
+                        this.sendEbookToKindle(file.name);
+                    }
                     this.index(req, res);
                 }
             });
@@ -44,33 +55,69 @@ export default class EbooksController {
 
     private getBooks(cb: Function): void {
         let ret: Ebook[] = [];
-        let done = false;
-        fs.readdirSync(this.ebookDir).forEach((file, index, arr) => {
-            const ebook = new epub(this.ebookDir + file);
-            ebook.on('end', function() {
-                ret.push(new Ebook({
-                    name: ebook.metadata.title,
-                    author: ebook.metadata.creator,
-                    description: ebook.metadata.description
+        const files = fs.readdirSync(this.ebookDir);
+        let numMobi = 0;
+        files.forEach((file, index, arr) => {
+            if (getFileExt(file) === 'epub') {
+                const ebook = new epub(this.ebookDir + file);
+                ebook.on('end', function() {
+                    ret.push(new Ebook({
+                        name: ebook.metadata.title,
+                        author: ebook.metadata.creator,
+                        description: ebook.metadata.description
 
-                }));
-                if(index === arr.length-1) {
-                    cb(ret);
-                }
-            });
-            ebook.parse();
+                    }));
+                    if(index === arr.length-1) {
+                        cb(ret);
+                    }
+                });
+                ebook.parse();
+            } else {
+                numMobi++;
+            }
         });
+        if(numMobi === files.length) {
+            cb(ret);
+        }
     }
 
-    private convertEpubToMobi(filename: string): void {
+    private convertToMobi(filename: string, cb: Function): void {
         const calibre = new Calibre({ library: this.ebookDir });
-        // calibre.run('calibredb add', [this.ebookDir + filename])
-        //         .then(result => {
-        //             console.log(result);
-
-        //             return calibre.run('ebook-convert', [this.ebookDir + filename, this.ebookDir + ])
-        //         })
+        calibre.run('ebook-convert', [this.ebookDir + filename, this.ebookDir + parseName(filename) + '.mobi'])
+               .then(result => {
+                    cb(result);
+                });
     }
 
+    private sendEbookToKindle(filename: string): void {
+        const { host, port, secure, from, to } = EMAIL_CRED;
+        let mailer = nodemailer.createTransport({
+            host,
+            port,
+            secure,
+            auth: {
+                user: this.EMAIL_USER,
+                pass: this.EMAIL_PASS
+            }
+        });
+        let options = {
+            from,
+            to,
+            attachments: [
+                {
+                    path: this.ebookDir + parseName(filename) + '.mobi'
+                }
+            ]
+        }
+        if (getFileExt(filename) === 'epub') {
+            this.convertToMobi(filename, (result) => {
+                mailer.sendMail(options, (err, info) => {
+                    if(err) {
+                        return console.log(err);
+                    }
+                });
+            });
+        }
+    }
 
 }

@@ -3,7 +3,7 @@ var fileSelected = false;
 function submitForm() {
     if(!fileSelected) {
         alertNoFiles();
-    } else if (!isEpubFile(getFileInput())) {
+    } else if (!isEpubOrMobi(getFileInput())) {
         alertInvalidFile();
     } else {
         $('#ebook-uploadProgress').collapse();
@@ -26,8 +26,9 @@ function alertInvalidFile() {
     console.log('invalid file fomat');
 }
 
-function isEpubFile(filename) {
-    return filename.split('.').slice(-1)[0] === 'epub';
+function isEpubOrMobi(filename) {
+    return filename.split('.').slice(-1)[0] === 'epub' ||
+            filename.split('.').slice(-1)[0] === 'mobi';
 }
 
 function getFileInput() {
