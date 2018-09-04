@@ -17,11 +17,11 @@ class Server {
     private PASSWORD: string;
     private PORT: number;
 
-    constructor(opts: any) {
+    constructor() {
         this.app = express();
     }
 
-    public configure(opts) {
+    public configure(opts: any): void {
         this.PORT = opts.port;
         this.ROOT_DIR = opts.rootDir;
         this.EBOOK_DIR = opts.ebookDir;
@@ -46,7 +46,7 @@ class Server {
         this.app.use('/files', this.files.router);
     }
 
-    public start() {
+    public start(): void {
         this.app.listen(this.PORT);
     }
 };
