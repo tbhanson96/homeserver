@@ -1,11 +1,5 @@
 <html>
-    <head>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="/stylesheets/ebooks.css" rel='stylesheet'/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src='/scripts/ebooks/upload.js'></script>
-    </head>
+    <%- include('/_head', { title: 'Ebooks', controller: 'ebooks', scripts: ['main', 'upload'], stylesheets: ['ebooks']}) %>
     <body>
         <section class="jumbotron text-center bg-white">
             <div class="container">
