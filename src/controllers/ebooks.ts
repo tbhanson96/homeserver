@@ -3,8 +3,7 @@ import fs from 'fs';
 import util from 'util';
 import EMAIL_CRED from '../../config/email-credentials';
 import epub from 'epub';
-import { parseName, getFileExt } from '../lib/ebook-util';
-import Calibre from 'node-calibre';
+import { parseName, getFileExt, convertToMobi, getEpubCover } from '../lib/ebook-util';
 import nodemailer from 'nodemailer';
 import Ebook from '../models/ebook';
 
@@ -81,13 +80,7 @@ export default class EbooksController {
         }
     }
 
-    private convertToMobi(filename: string, cb: Function): void {
-        const calibre = new Calibre({ library: this.ebookDir });
-        calibre.run('ebook-convert', [this.ebookDir + filename, this.ebookDir + parseName(filename) + '.mobi'])
-               .then(result => {
-                    cb(result);
-                });
-    }
+
 
     private sendEbookToKindle(filename: string): void {
         const { host, port, secure, from, to } = EMAIL_CRED;
@@ -110,14 +103,19 @@ export default class EbooksController {
             ]
         }
         if (getFileExt(filename) === 'epub') {
-            this.convertToMobi(filename, (result) => {
+            convertToMobi(filename, (result) => {
                 mailer.sendMail(options, (err, info) => {
                     if(err) {
                         return console.log(err);
                     }
                 });
             });
+        } else {
+            mailer.sendMail(options, (err, info) => {
+                if (err) {
+                    return console.log(err);
+                }
+            });
         }
     }
-
 }
