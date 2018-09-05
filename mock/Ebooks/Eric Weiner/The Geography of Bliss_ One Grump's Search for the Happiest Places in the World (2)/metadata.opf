@@ -2,7 +2,7 @@
 <package xmlns="http://www.idpf.org/2007/opf" unique-identifier="uuid_id" version="2.0">
     <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
         <dc:identifier opf:scheme="calibre" id="calibre_id">2</dc:identifier>
-        <dc:identifier opf:scheme="uuid" id="uuid_id">e0b40047-1ad0-45f5-bf24-78abd19a8ed4</dc:identifier>
+        <dc:identifier opf:scheme="uuid" id="uuid_id">c521640c-074e-4715-b633-dcc62798de8c</dc:identifier>
         <dc:title>The Geography of Bliss: One Grump's Search for the Happiest Places in the World</dc:title>
         <dc:creator opf:file-as="WEINER, ERIC" opf:role="aut">Eric Weiner</dc:creator>
         <dc:contributor opf:file-as="calibre" opf:role="bkp">calibre (2.55.0) [http://calibre-ebook.com]</dc:contributor>
@@ -13,7 +13,7 @@
         <dc:language>eng</dc:language>
         <dc:subject>TRV000000</dc:subject>
         <meta content="{&quot;Eric Weiner&quot;: &quot;&quot;}" name="calibre:author_link_map"/>
-        <meta content="2018-09-05T18:56:52.188043+00:00" name="calibre:timestamp"/>
+        <meta content="2018-09-05T21:58:28.360871+00:00" name="calibre:timestamp"/>
         <meta content="Geography of Bliss: One Grump's Search for the Happiest Places in the World, The" name="calibre:title_sort"/>
     </metadata>
     <guide>
