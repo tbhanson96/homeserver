@@ -1,0 +1,26 @@
+<html>
+    <%- include('/_head', { title: 'Ebooks', controller: 'ebooks', scripts: ['main', 'upload'], stylesheets: ['ebooks']}) %>
+    <body>
+        <section class="jumbotron text-center bg-white">
+            <div class="container">
+                <h1 class="jumbotron-heading">Ebooks</h1>
+                <p class="lead text-muted">Upload and view ebooks.</p>
+                <p>
+                    <a href="#ebook-upload" role='button' class="btn btn-primary my-2" data-toggle='collapse' aria-expanded='false' aria-controls='collapseExample'>Upload new ebook</a>
+                </p>
+            </div>
+        </section>
+        </div>
+        <%- include('_upload') %>
+        <%- include('_uploadProgress') %>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    <% for (book of books) { %>
+                        <%- include('_ebook', { book }) %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
