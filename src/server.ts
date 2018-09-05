@@ -48,6 +48,7 @@ class Server {
         this.app.use(fileUpload());
         this.app.use(this.auth.router);
         this.app.use(express.static(this.ROOT_DIR));
+        this.app.use(express.static(this.EBOOK_DIR));
         this.app.use(express.static(__dirname + '/../public', {dotfiles: 'allow'}));
         this.app.use('/', this.home.router);
         this.app.use('/files', this.files.router);

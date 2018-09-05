@@ -20,14 +20,17 @@ function convertToMobi(ebookDir: string, filepath: string, cb: Function): void {
             });
 }
 
-function scanLibForEpubs(ret: string[], ebookDir: string, curDir: string): void {
+function scanLibForEpubs(ret: any[], ebookDir: string, curDir: string): void {
     fs.readdirSync(ebookDir + curDir).forEach((path, index, arr) => {
         let stats = fs.statSync(ebookDir + curDir + '/' + path);
         if(stats.isDirectory()) {
             scanLibForEpubs(ret, ebookDir, curDir +'/' + path);
         }
         if (getFileExt(path) === 'epub') {
-            ret.push(curDir + '/' + path);
+            ret.push({
+                book: curDir + '/' + path,
+                cover: fs.existsSync(ebookDir + curDir + '/cover.jpg') ? curDir + '/cover.jpg' : null
+            });
         }
     });
 }
