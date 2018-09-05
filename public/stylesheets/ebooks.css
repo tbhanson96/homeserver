@@ -5,3 +5,7 @@
 .inline {
     display: inline-block;
 }
+
+.book-description {
+    padding-top: 10px;
+}

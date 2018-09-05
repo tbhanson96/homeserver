@@ -58,19 +58,18 @@ export default class EbooksController {
         let ret: Ebook[] = [];
         let files = [];
         scanLibForEpubs(files, this.ebookDir, '');
-        console.log(files);
         let numMobi = 0;
         files.forEach((file, index, arr) => {
             if (getFileExt(file.book) === 'epub') {
                 const ebook = new epub(this.ebookDir + file.book);
                 ebook.on('end', function() {
                     ret.push(new Ebook({
+                        id: index,
                         name: ebook.metadata.title,
                         author: ebook.metadata.creator,
                         description: ebook.metadata.description,
                         coverPath: encodeURI(file.cover)
                     }));
-                    console.log(file.cover);
                     if(index === arr.length-1) {
                         cb(ret);
                     }
