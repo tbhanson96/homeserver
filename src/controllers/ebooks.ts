@@ -3,7 +3,7 @@ import fs from 'fs';
 import util from 'util';
 import EMAIL_CRED from '../../config/email-credentials';
 import epub from 'epub';
-import { parseName, getFileExt, convertToMobi, getEpubCover } from '../lib/ebook-util';
+import { parseName, getFileExt, convertToMobi, scanLibForEpubs, addBook } from '../lib/ebook-util';
 import nodemailer from 'nodemailer';
 import Ebook from '../models/ebook';
 
@@ -35,15 +35,17 @@ export default class EbooksController {
             if(!file.name) {
                 return;
             }
-            file.mv(this.ebookDir + file.name, (err) => {
+            file.mv('/tmp/' + file.name, (err) => {
                 if(err) {
                     errors.push(err);
                 } else if(errors.length === 0) {
-                    if(req.body && req.body.sendToKindle === 'on') {
-                        console.log('sent to kindle');
-                        this.sendEbookToKindle(file.name);
-                    }
-                    this.index(req, res);
+                    addBook(this.ebookDir, '/tmp/' + file.name, result => {
+                        if(req.body && req.body.sendToKindle === 'on') {
+                            console.log('sent to kindle');
+                            this.sendEbookToKindle('/tmp/' + file.name);
+                        }
+                        this.index(req, res);
+                    });
                 }
             });
         });
@@ -54,7 +56,9 @@ export default class EbooksController {
 
     private getBooks(cb: Function): void {
         let ret: Ebook[] = [];
-        const files = fs.readdirSync(this.ebookDir);
+        let files = [];
+        scanLibForEpubs(files, this.ebookDir, '');
+        console.log(files);
         let numMobi = 0;
         files.forEach((file, index, arr) => {
             if (getFileExt(file) === 'epub') {
@@ -82,7 +86,7 @@ export default class EbooksController {
 
 
 
-    private sendEbookToKindle(filename: string): void {
+    private sendEbookToKindle(filepath: string): void {
         const { host, port, secure, from, to } = EMAIL_CRED;
         let mailer = nodemailer.createTransport({
             host,
@@ -98,12 +102,12 @@ export default class EbooksController {
             to,
             attachments: [
                 {
-                    path: this.ebookDir + parseName(filename) + '.mobi'
+                    path: parseName(filepath) + '.mobi'
                 }
             ]
         }
-        if (getFileExt(filename) === 'epub') {
-            convertToMobi(filename, (result) => {
+        if (getFileExt(filepath) === 'epub') {
+            convertToMobi(this.ebookDir, filepath, (result) => {
                 mailer.sendMail(options, (err, info) => {
                     if(err) {
                         return console.log(err);
