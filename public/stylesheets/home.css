@@ -1,3 +1,7 @@
+body {
+    padding-top: 65px;
+}
+
 #apps {
     background-color: lightgray;
     height: 400px;
