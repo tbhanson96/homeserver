@@ -14,16 +14,17 @@ function renderFormInput() {
     let input = $('#file-'+fileIndex)[0];
     renderSelectedFile(input.files.item(0).name, fileIndex);
     console.log(input.files.item(0).type);
-    input.className += ('disabled');
     fileIndex++;
     numFiles++;
     let newInput = document.createElement('input');
     newInput.type = 'file';
+    newInput.className = 'disabled custom-file-input'
     newInput.name = 'file'+fileIndex;
     newInput.id = 'file-'+fileIndex;
     newInput.oninput = function() { 
         renderFormInput(); 
     };
+    $('#file-label').attr('for', 'file-'+fileIndex);
     $('#uploadForm')[0].appendChild(newInput);
 }
 
@@ -32,9 +33,9 @@ function renderSelectedFile(filename, fileNumber) {
     let selectedFile = document.createElement('li');
     selectedFile.className = 'list-group-item';
     selectedFile.id = 'file-list-'+fileNumber
-    // let img = document.createElement('img');
-    // img.addClass('file-icon');
-    // img.
+    let img = document.createElement('img');
+    img.className = 'file-icon';
+    img.setAttribute('src', '/images/')
     selectedFile.innerHTML += filename;
 
     let deleteButton = document.createElement('button');
