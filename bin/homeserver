@@ -2,6 +2,9 @@
 
 const Server = require('../dist/server');
 const options = require('options-parser');
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
 
 const { opt } = options.parse({
     user: {default: ' '},
@@ -10,10 +13,24 @@ const { opt } = options.parse({
     ebookDir: {default: __dirname + '/../mock/Ebooks/'},
     port: {default: 3000},
     emailUser: {default: 'fake@email.com'},
-    emailPass: {default: 'password'}
+    emailPass: {default: 'password'},
+    sslDir: {default: null}
 });
 
-let server = new Server();
+const server = new Server();
 server.configure(opt);
-server.start();
+const app = server.getExpressApp();
+
+if (!opt.sslDir) {
+    let httpServer = http.createServer(app);
+    httpServer.listen(app.get('port'));
+} else {
+    let privateKey = fs.readFileSync(opt.sslDir + '/key.pem');
+    let certificate = fs.readFileSync(opt.sslDir + '/certificate.pem');
+    let httpsServer = https.createServer({
+        key: privateKey,
+        cert: certificate
+    }, app);
+    httpsServer.listen(app.get('port'));
+}
 

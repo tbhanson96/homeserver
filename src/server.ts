@@ -58,6 +58,10 @@ class Server {
     public start(): void {
         this.app.listen(this.PORT);
     }
+
+    public getExpressApp(): any {
+        return this.app;
+    }
 };
 
 module.exports = Server;
