@@ -2,7 +2,7 @@ import express, { Router } from 'express';
 import fs from 'fs';
 import util from 'util';
 import file from '../models/file';
-import { parseTimestamp, parsePerms, splitDir, parseSize } from '../lib/file-util';
+import { parseTimestamp, parsePerms, splitDir, parseSize, removeHiddenFiles } from '../lib/file-util';
 import VALID_FILE_TYPES from '../../config/valid-file-types';
 
 
@@ -10,7 +10,9 @@ export default class FilesController {
     public router: Router;
     public rootDir: string;
     private reqDir: string;
+    private showHiddenFiles: boolean;
     constructor(rootDir) {
+        this.showHiddenFiles = false;
         this.rootDir = rootDir;
         this.router = express.Router();
         this.router.get('*', this.index.bind(this));
@@ -18,13 +20,17 @@ export default class FilesController {
     }
 
     private index(req, res): void {
+        if(req.query.hiddenFiles !== undefined) {
+            this.showHiddenFiles = req.query.hiddenFiles == 'true';
+        }
+
         let localDir = this.rootDir + decodeURI(req.path);
         let reqDir = decodeURI(req.path);
         this.reqDir = reqDir;
         let pathArr = splitDir(reqDir);
         let files = this.getFiles(localDir);
 
-        res.render('files/index', { reqDir, localDir, pathArr, files, upload: null});
+        res.render('files/index', { reqDir, localDir, pathArr, files, hiddenFiles: this.showHiddenFiles, upload: null});
     }
 
     private upload(req, res): void {
@@ -60,6 +66,9 @@ export default class FilesController {
     private getFiles(dir: string): file[] {
         let ret: file[] = [];
         let files = fs.readdirSync(dir);
+        if(!this.showHiddenFiles) {
+            files = removeHiddenFiles(files);
+        }
         for (let f of files) {
             let stats = fs.statSync(dir + f);
             const props = this.getFileProps(f, stats); 

@@ -13,14 +13,18 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col" >
-                        <button type="button" id="upload" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal">
+                        <button type="button" id="uploa" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal">
                                 <img class="add-icon" src="/images/add.png"/>
                                 Upload File
                         </button>
                     </th>
                     <th scope="col">Name</th>
                     <th scope="col">Last Modified</th>
-                    <th scope="col">Size</th>
+                    <th scope="col">Size
+                        <a id="toggleHiddenFiles" class="btn btn-primary btn-sm" href='?hiddenFiles=<%= !hiddenFiles %>' role="button">
+                            <%= hiddenFiles ? 'Hide hidden files' : 'Show hidden files' %>
+                        </a>
+                    </th>
                 </tr>
             </thead>
             <tbody>

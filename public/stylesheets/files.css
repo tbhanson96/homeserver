@@ -36,3 +36,7 @@ body {
 .files-list {
     padding-top: 10px;
 }
+
+#toggleHiddenFiles {
+    float: right;
+}

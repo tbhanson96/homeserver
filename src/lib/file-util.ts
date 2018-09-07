@@ -50,4 +50,15 @@ function parseSize(filesize: number): string {
     }
 }
 
-export {parsePerms, parseTimestamp, splitDir, parseSize };
+function removeHiddenFiles(files: string[]): string[] {
+    let ret = [];
+    files.forEach(file => {
+        if(file.charAt(0) != '.') {
+            ret.push(file);
+        }
+    });
+
+    return ret;
+}
+
+export {parsePerms, parseTimestamp, splitDir, parseSize, removeHiddenFiles };
