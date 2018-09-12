@@ -53,7 +53,8 @@ export default class FilesController {
                         localDir: this.rootDir + this.reqDir,
                         pathArr: splitDir(this.reqDir),
                         files: this.getFiles(this.rootDir + this.reqDir),
-                        upload: fileUploads
+                        upload: fileUploads,
+                        hiddenFiles: this.showHiddenFiles
                     });
                 }
             });
