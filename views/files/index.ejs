@@ -2,7 +2,7 @@
     <%- include('/_head', { title: 'Files', controller: 'files', scripts: ['main', 'upload'], stylesheets: ['files']}) %>
     <body>
         <%- include('/_navbar', { page: 'files' }) %>
-        <%- include('_addModal', { localDir }) %>
+        <%- include('_addModal', { reqPath }) %>
         <%- include('_directory', { localDir }) %>
         <% if (!!upload) { %>
             <div class="alert alert-success fade show" role="alert">
