@@ -9,7 +9,7 @@ import VALID_FILE_TYPES from '../../config/valid-file-types';
 export default class FilesController {
     public router: Router;
     public rootDir: string;
-    private reqDir: string;
+    private reqPath: string;
     private showHiddenFiles: boolean;
     constructor(rootDir) {
         this.showHiddenFiles = false;
@@ -26,14 +26,17 @@ export default class FilesController {
 
         let localDir = this.rootDir + decodeURI(req.path);
         let reqDir = decodeURI(req.path);
-        this.reqDir = reqDir;
+        this.reqPath = req.path;
         let pathArr = splitDir(reqDir);
         let files = this.getFiles(localDir);
 
-        res.render('files/index', { reqDir, localDir, pathArr, files, hiddenFiles: this.showHiddenFiles, upload: null});
+        res.render('files/index', { reqPath: this.reqPath, localDir, pathArr, files, hiddenFiles: this.showHiddenFiles, upload: null});
     }
 
     private upload(req, res): void {
+        console.log('req path: ' + req.path)
+        let reqDir = decodeURI(req.path);
+        console.log('dirPath: ' + reqDir);
         let fileUploads = '';
         let errors = [];
         Object.keys(req.files).forEach((filename, index, arr) => {
@@ -41,7 +44,7 @@ export default class FilesController {
             if(!file.name) {
                 return;
             }
-            const newpath = this.rootDir + req.path + file.name;
+            const newpath = this.rootDir + reqDir + file.name;
             fileUploads += file.name + ' ';
             file.mv(newpath, (err) => {
                 if(err) {
@@ -49,10 +52,10 @@ export default class FilesController {
                 }
                 if(index === arr.length - 1 && errors.length === 0) {
                     res.render('files/index', { 
-                        reqDir: this.reqDir,
-                        localDir: this.rootDir + this.reqDir,
-                        pathArr: splitDir(this.reqDir),
-                        files: this.getFiles(this.rootDir + this.reqDir),
+                        reqPath: this.reqPath,
+                        localDir: this.rootDir + reqDir,
+                        pathArr: splitDir(reqDir),
+                        files: this.getFiles(this.rootDir + reqDir),
                         upload: fileUploads,
                         hiddenFiles: this.showHiddenFiles
                     });
@@ -67,6 +70,7 @@ export default class FilesController {
     private getFiles(dir: string): file[] {
         let ret: file[] = [];
         let files = fs.readdirSync(dir);
+        let reqDir = decodeURI(this.reqPath);
         if(!this.showHiddenFiles) {
             files = removeHiddenFiles(files);
         }
@@ -82,6 +86,7 @@ export default class FilesController {
         let timestamp = parseTimestamp(stats.mtime.toDateString());
         let permissions = parsePerms(stats.mode.toString());
         let extension = filename.split('.').slice(-1)[0];
+        let reqDir = decodeURI(this.reqPath);
         let type = VALID_FILE_TYPES[extension];
         if(!type) {
             type = 'file';
@@ -91,7 +96,7 @@ export default class FilesController {
         }
         let size = parseSize(stats.size);
         let name = stats.isDirectory() ? filename+'/' : filename;
-        let link = stats.isDirectory() ? '/files'+this.reqDir+filename+'/' : this.reqDir+filename;
+        let link = stats.isDirectory() ? '/files'+reqDir+filename+'/' : reqDir+filename;
         link = encodeURI(link);
         return { name, type, size, timestamp, permissions, link };
         
