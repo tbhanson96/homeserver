@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+import gallery from 'express-photo-gallery';
 import fileUpload from 'express-fileupload';
 import HomeController from './controllers/home'
 import FilesController from './controllers/files'
@@ -15,6 +16,7 @@ class Server {
 
     private ROOT_DIR: string;
     private EBOOK_DIR: string;
+    private PHOTOS_DIR: string;
     private USER: string;
     private PASSWORD: string;
     private PORT: number;
@@ -29,6 +31,7 @@ class Server {
         this.PORT = opts.port;
         this.ROOT_DIR = opts.rootDir;
         this.EBOOK_DIR = opts.ebookDir;
+        this.PHOTOS_DIR = opts.photosDir;
         this.USER = opts.user;
         this.PASSWORD = opts.pass;
         this.EMAIL_USER = opts.emailUser;
@@ -53,6 +56,7 @@ class Server {
         this.app.use('/', this.home.router);
         this.app.use('/files', this.files.router);
         this.app.use('/ebooks', this.ebooks.router);
+        this.app.use('/photos', gallery(this.PHOTOS_DIR, {title: "Photos"}));
     }
 
     public start(): void {
