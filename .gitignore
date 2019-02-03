@@ -2,7 +2,9 @@ node_modules
 node_modules/**
 package-lock.json
 yarn.lock
+config.json
 dist
 dist/**
 .vscode
 .vscode/**
+*.swp

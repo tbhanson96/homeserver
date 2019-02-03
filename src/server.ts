@@ -28,6 +28,7 @@ class Server {
     }
 
     public configure(opts: any): void {
+
         this.PORT = opts.port;
         this.ROOT_DIR = opts.rootDir;
         this.EBOOK_DIR = opts.ebookDir;
@@ -36,6 +37,7 @@ class Server {
         this.PASSWORD = opts.pass;
         this.EMAIL_USER = opts.emailUser;
         this.EMAIL_PASS = opts.emailPass;
+        console.log(this.PHOTOS_DIR);
 
         this.home = new HomeController();
         this.files = new FilesController(opts.rootDir);

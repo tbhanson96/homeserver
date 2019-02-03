@@ -6,7 +6,8 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 
-const { opt } = options.parse({
+let { opt } = options.parse({
+    configFile: {default: null},
     user: {default: ' '},
     pass: {default: ' '},
     rootDir: {default: __dirname + '/../mock'},
@@ -17,6 +18,10 @@ const { opt } = options.parse({
     emailPass: {default: 'password'},
     sslDir: {default: null}
 });
+
+if (opt.configFile) {
+    opt = require(opt.configFile);
+}
 
 const server = new Server();
 server.configure(opt);
