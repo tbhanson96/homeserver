@@ -10,6 +10,7 @@ export default class FilesController {
     public router: Router;
     public rootDir: string;
     private reqPath: string;
+    private reqUserAgent: string;
     private showHiddenFiles: boolean;
     constructor(rootDir) {
         this.showHiddenFiles = false;
@@ -27,6 +28,7 @@ export default class FilesController {
         let localDir = this.rootDir + decodeURI(req.path);
         let reqDir = decodeURI(req.path);
         this.reqPath = req.path;
+        this.reqUserAgent = req.headers['user-agent'];
         let pathArr = splitDir(reqDir);
         let files = this.getFiles(localDir);
 
@@ -96,7 +98,14 @@ export default class FilesController {
         }
         let size = parseSize(stats.size);
         let name = stats.isDirectory() ? filename+'/' : filename;
-        let link = stats.isDirectory() ? '/files'+reqDir+filename+'/' : reqDir+filename;
+        let link;
+        if (type === 'pdf' && this.reqUserAgent.includes('Android')) {
+            link = 'https://drive.google.com/viewerng/viewer?embedded=true&url=https://hansonserver.ddns.net'+reqDir+filename;
+        } else if (type === 'xls' || type === 'xlsx' || type === 'docx') {
+            link = 'https://drive.google.com/viewerng/viewer?embedded=true&url=https://hansonserver.ddns.net'+reqDir+filename;
+        } else {
+            link = stats.isDirectory() ? '/files'+reqDir+filename+'/' : reqDir+filename;
+        }
         link = encodeURI(link);
         return { name, type, size, timestamp, permissions, link };
         
